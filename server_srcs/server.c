@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server copy.c                                      :+:      :+:    :+:   */
+/*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:09:20 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/11 19:30:07 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/12 00:52:14 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ t_server g_server;
 
 void	handle_sigusr(int sig, siginfo_t *sa, void *context)
 {
+	if (sig == SIGINT)
+	{
+		ft_printf(YEL "\nClosing server... Done.\n" RESET);
+		if (g_server.str)
+			free(g_server.str);
+		exit(EXIT_SUCCESS);
+	}
 	int save_pid;
 	if (sig == SIGUSR1)
 		g_server.bit_received = 0;
@@ -27,10 +34,7 @@ void	handle_sigusr(int sig, siginfo_t *sa, void *context)
 	save_pid = g_server.client_pid;
 	g_server.client_pid = sa->si_pid;
 	if (g_server.sig_count != 0 && save_pid != g_server.client_pid)
-	{
-		ft_printf("BUG CLIENT\n");
 		g_server.bug_client = 1;
-	}
 	g_server.sig_count++;
 	g_server.ready = 1;
 }
@@ -63,6 +67,7 @@ void start_server()
 	sa.sa_sigaction = handle_sigusr;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+	sigaction(SIGINT, &sa, NULL);
 }
 
 void set_param(void)
@@ -74,7 +79,7 @@ void set_param(void)
 	g_server.bug_client = 0;
 	g_server.size_alloc = 0;
 	g_server.server_pid = getpid();
-	ft_printf(YEL "Server pid: %d\n" RESET, g_server.server_pid);
+	ft_printf(YEL "Server n°" RESET RED "%d" RESET YEL " waiting for client...\n" RESET, g_server.server_pid);
 }
  
 void alloc_str(void)
@@ -92,17 +97,19 @@ void reset_param(void)
 	set_param();
 }
 
-int	str_need_more_memory(void)
+void	check_realloc(void)
 {
 	if (g_server.sig_count % (ALLOC_SIZE * 8) == 0 || g_server.sig_count == 1)
-		return (1);
-	return (0);
+		alloc_str();
 }
 
-int bug_client()
+int check_bug_client(void)
 {
-	if (kill(g_server.client_pid, SIGUSR1) == -1 || g_server.bug_client)
+	if (g_server.bug_client == 1)
+	{
+		ft_printf("An error has occured with the client, transmission failed\n");
 		return (1);
+	}
 	return (0);
 }
 
@@ -113,43 +120,61 @@ int char_is_receipted(void)
 	return (0);
 }
 
-int str_is_fully_recepteid(int signal_count, char c)
+int full_transmission_succeed(void)
 {
-	if ((signal_count % 8) == 0 && c == '\0')
+	if ((g_server.sig_count % 8) == 0 && g_server.str[g_server.index] == '\0')
 		return (1);
 	return (0);
+}
+
+void print_and_reset(void)
+{
+	if (kill(g_server.client_pid, SIGUSR2) == -1)
+	{
+		g_server.bug_client = 1;
+		ft_printf("Not enable to send success confirmation to client\n");
+	}
+	else
+	{
+		ft_printf(GRN "Message from client n°" RESET RED "%d" RESET GRN " :\n" RESET, g_server.client_pid);
+		ft_printf("%s\n", g_server.str);
+	}
+	reset_param();
+}
+
+void send_delivering_receipt(void)
+{
+	if (kill(g_server.client_pid, SIGUSR1) == -1)
+		g_server.bug_client = 1;
+}
+
+
+
+void reset_for_new_client(void)
+{
+	reset_param();
+	g_server.sig_count = 1;						// on remet à un car on a reçu un bit d'un nouveau processus
+	alloc_str();
 }
 
 int main(void)
 {
 	start_server();
-	while (1)
+	while (KEEP_GOING)
 	{
 		while (!g_server.ready)
-			;
-		if (g_server.sig_count % (ALLOC_SIZE * 8) == 0 || g_server.sig_count == 1)
-			alloc_str();									 // if str need more memory
-			
-		if (g_server.bug_client == 1)
-		{
-			reset_param();
-			g_server.sig_count = 1;						// on remet à un car on a reçu un bit d'un nouveau processus
-			alloc_str();
-		}
+			usleep(500);
+		check_realloc();									 // if str need more memory
+		if (check_bug_client())
+			reset_for_new_client();
 		convert_binary_to_char();
-		if (str_is_fully_recepteid(g_server.sig_count, g_server.str[g_server.index]))						// si on a reçu toute la chaine, on affiche
-		{
-			if (kill(g_server.client_pid, SIGUSR2) == -1)
-				g_server.bug_client = 1;
-			ft_printf("%s\n", g_server.str);
-			reset_param();
-		}
+		
+		if (full_transmission_succeed())						// si on a reçu toute la chaine, on affiche
+			print_and_reset();
 		if (char_is_receipted())							// si on a recu les 8 bits du char, on incremente l'index
 			g_server.index++;
-		g_server.ready = 0;
-		if (kill(g_server.client_pid, SIGUSR1) == -1)
-			g_server.bug_client = 1;
-//		ft_printf("BOUCLE\n");								// on remet la variable ready à 0 pour éviter de repasser dans les fonctions avant la reception d'un nouveau signal
+		g_server.ready = 0;				// on remet la variable ready à 0 pour éviter de repasser dans les fonctions avant la reception d'un nouveau signal
+		send_delivering_receipt();
 	}
 	return (0);
 }

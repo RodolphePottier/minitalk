@@ -6,7 +6,7 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 17:23:01 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/11 19:56:13 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/12 00:23:33 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_client g_client;
 
 void ft_exit()
 {
-	ft_printf("Transmission failed, please check server pid.\n");
+	ft_printf(RED "Transmission failed, please check server pid.\n" RESET);
 	exit(EXIT_FAILURE);
 }
 
@@ -28,7 +28,7 @@ void	handle_sigusr(int sig, siginfo_t *sa, void *context)
 	if (sig == SIGUSR1)
 		g_client.delivery_receipt = 1;
 	if (sig == SIGUSR2)
-		ft_printf("Transmission succeed.\n");
+		ft_printf(GRN "Transmission succeed.\n" RESET);
 }
 
 void	convert_char_to_binary(int pid, char c)
@@ -99,7 +99,7 @@ int	main(int argc, char **argv)
 {
 	if (argc != 3)
 	{
-		printf("Wrong number of agument\n");
+		printf(RED "Wrong number of agument\n" RESET);
 		return (1);
 	}
 	
@@ -107,7 +107,7 @@ int	main(int argc, char **argv)
 	g_client.pid = ft_atoi(argv[1]);
 	if (g_client.pid < 0)
 	{
-		ft_printf("Transmission failed. The server pid is negative\n");
+		ft_printf(RED "Transmission failed. The server pid is negative\n" RESET);
 		return (1);
 	}
 	g_client.str = argv[2];

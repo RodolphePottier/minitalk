@@ -6,7 +6,7 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:38:18 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/10 20:55:29 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/12 00:22:30 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 
 #define _GNU_SOURCE
 #define CHAR_BIT 7
-
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define RESET "\x1B[0m"
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
