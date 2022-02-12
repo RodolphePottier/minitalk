@@ -6,58 +6,29 @@
 #    By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/12 16:15:30 by rpottier          #+#    #+#              #
-#    Updated: 2022/02/08 15:58:31 by rpottier         ###   ########.fr        #
+#    Updated: 2022/02/12 20:51:54 by rpottier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+SERVER_SRCS_DIR = server_srcs/
 
-OBJS_DIR	=	objs/
+SERVER_SRCS		=	$(addprefix $(SERVER_SRCS_DIR), main_server.c \
+						malloc.c \
+						transmission_and_reset.c
 
-SRCS_DIR	=	srcs/
+SERVER_OBJS		=	$(addprefix $(SERVER_OBJS_DIR), $(SERVER_SRCS:.c=.o))
 
-GNL_DIR		=	gnl/
+SERVER_OBJS_DIR = server_objs/
 
-GNL			=	$(addprefix $(GNL_DIR), get_next_line.c \
-					get_next_line_utils.c)
+CFLAGS		=	-Wall -Wextra -Werror
 
-SRCS		=	$(addprefix $(SRCS_DIR), main.c \
-				bresenham.c \
-				bresenham_utils.c \
-				transform_and_draw.c \
-				centering.c \
-				put_pxl.c \
-				parsing.c \
-				rotation.c \
-				key_hook.c \
-				key_hook_utils.c \
-				key_handling1.c \
-				key_handling2.c \
-				color.c \
-				colors_utils.c \
-				debug.c \
-				map_size.c \
-				init_zoom.c \
-				exit.c)
-
-OBJS		=	$(addprefix $(OBJS_DIR), $(SRCS:.c=.o))
-
-CFLAGS		=	-o3 -Wall -Wextra 
-#-g3 -fsanitize=address
 INCLUDES	=	-I $(INC)
-
-LINK_LIB	=	$(LIB_DIR) $(LIB)
 
 CC			=	cc
 
-NAME		=	fdf
+NAME		=	server
 
 RM			=	rm -rf
-
-LIB_DIR		=	libft/
-
-LIB			=	-lft
-
-MLX_LIB		=	-lmlx -lX11 -lXext -lm
 
 INC			=	includes
 
@@ -74,7 +45,7 @@ fcleanprintf:
 			$(MAKE) -C ft_printf fclean 
 
 $(NAME): 
-	$(CC) $(CFLAGS) $(GNL) $(SRCS) $(MLX_LIB) -L $(LINK_LIB) $(INCLUDES) -o fdf
+	$(CC) $(CFLAGS) $(SERVER_SRCS) -L $(LINK_LIB) $(INCLUDES) -o fdf
 
 clean:
 			${RM} ${OBJS}

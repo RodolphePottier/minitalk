@@ -6,74 +6,66 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:38:18 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 02:36:22 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/12 20:38:54 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
-#define SERVER_H
+# define SERVER_H
 
-#define RED   "\x1B[31m"
-#define GRN   "\x1B[32m"
-#define YEL   "\x1B[33m"
-#define RESET "\x1B[0m"
+# include <stdlib.h>
+# include <signal.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include "../ft_printf/includes/ft_printf.h"
 
-#define _GNU_SOURCE
-#define ALLOC_SIZE 50
-#define FT_STDOUT 1
-#define KEEP_GOING 1
-#include <stdlib.h>
-#include <stdio.h>
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+/* ------------------- Colors -------------------------*/
 
-#include "../ft_printf/includes/ft_printf.h"
+# define RED   "\x1B[31m"
+# define GRN   "\x1B[32m"
+# define YEL   "\x1B[33m"
+# define RESET "\x1B[0m"
+# define _GNU_SOURCE
+# define SUCCESS 1
+# define FAILURE 0
+
+/* --------------- Structure definition -------------- */
 
 typedef struct s_server
 {
-	int		bit_received;
+	int		bit;
 	int		client_pid;
-	int		server_pid;
-	char	*str;
-	int		size_alloc;
-	int		index;
 	int		ready;
-	int		sig_count;
-	int		bug_client;
-}   t_server;
+	int		count;
+}	t_server;
 
 typedef struct s_buffer
 {
 	char	*str;
 	int		index;
-}   t_buffer;
+	int		len;
+}	t_buffer;
 
+/* ------------------- Prototypes ---------------------- */
 
-/*----- start_server.c -----*/
-
-void	start_server(void);
-void	set_param(void);
-void	check_realloc(void);
-void	alloc_str(void);
-
-/*----- reception.c -----*/
+/*----- mains_server.c -----*/
 
 void	handle_sigusr(int sig, siginfo_t *sa, void *context);
-void	convert_binary_to_char(void);
-int		char_is_receipted(void);
-void	send_delivering_receipt(void);
+void	set_sigaction(void);
+int		send_delivering_receipt(void);
 
-/*----- bug_client.c -----*/
+/*----- malloc.c -----*/
 
-int		check_bug_client(void);
-void	reset_for_new_client(void);
+void	get_message_len(int *len, int bit, int sig_count);
+int		message_len_is_set(int sig_count, int size_of_int);
+void	malloc_str(t_buffer *buf);
 
-/*----- print_and_reset.c -----*/
+/*----- Transmission_and_reset.c -----*/
 
-int		full_transmission_succeed(void);
-void	reset_param(void);
-void	print_and_reset(void);
+void	binary_to_char(char *buffer, int *index, int bit, int sig_count);
+int		full_transmission_succeed(int sig_count, int size_of_int, int len);
+void	reset(t_buffer *message, t_server *server);
+void	print_and_reset(t_buffer *message, t_server *server, int status);
 
 #endif
