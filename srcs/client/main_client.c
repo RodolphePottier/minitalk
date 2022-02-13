@@ -6,11 +6,11 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 19:34:14 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:41:30 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 20:22:40 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/client.h"
+#include "../../includes/client.h"
 
 static t_client	g_client;
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 	g_client.pid = ft_atoi(argv[1]);
 	if (g_client.pid <= 0)
 	{
-		ft_printf(RED "Transmission failed. The server pid is negative\n" RESET);
+		ft_printf(RED "Transmission failed. The server pid is negative or equal to 0\n" RESET);
 		return (1);
 	}
 	g_client.str = argv[2];

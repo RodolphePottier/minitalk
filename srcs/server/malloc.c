@@ -6,11 +6,11 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:12:13 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:27:08 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:14:10 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/server.h"
+#include "../../includes/server.h"
 
 void	get_message_len(int *len, int bit, int sig_count)
 {

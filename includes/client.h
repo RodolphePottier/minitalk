@@ -6,12 +6,14 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:38:18 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:40:47 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:10:38 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_H
 # define CLIENT_H
+
+# define _GNU_SOURCE
 
 # include <stdlib.h>
 # include <signal.h>
@@ -29,7 +31,7 @@
 
 /* ------------------- Utils -------------------------*/
 
-# define _GNU_SOURCE
+
 # define CHAR_BIT 7
 
 /* --------------- Structure definition -------------- */

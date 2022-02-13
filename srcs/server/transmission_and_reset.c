@@ -6,11 +6,11 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:12:46 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:32:13 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:14:14 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/server.h"
+#include "../../includes/server.h"
 
 void	binary_to_char(char *buffer, int *index, int bit, int sig_count)
 {
@@ -56,4 +56,7 @@ void	print_and_reset(t_buffer *message, t_server *server, int status)
 	else if (status == FAILURE)
 		ft_printf(YEL" failed\n\n" RESET);
 	reset(message, server);
+	ft_printf("-------------------------------------------\n");
+	ft_printf(GRN"\nServer n°" RESET RED "%d" RESET, getpid());
+	ft_printf(GRN " listening...\n\n" RESET);
 }

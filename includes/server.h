@@ -6,13 +6,14 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:38:18 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:38:54 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 18:29:07 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
 
+# define _GNU_SOURCE
 # include <stdlib.h>
 # include <signal.h>
 # include <unistd.h>
@@ -26,7 +27,7 @@
 # define GRN   "\x1B[32m"
 # define YEL   "\x1B[33m"
 # define RESET "\x1B[0m"
-# define _GNU_SOURCE
+
 # define SUCCESS 1
 # define FAILURE 0
 

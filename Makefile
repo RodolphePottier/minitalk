@@ -6,37 +6,56 @@
 #    By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/12 16:15:30 by rpottier          #+#    #+#              #
-#    Updated: 2022/02/12 20:51:54 by rpottier         ###   ########.fr        #
+#    Updated: 2022/02/13 20:21:04 by rpottier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SERVER_SRCS_DIR = server_srcs/
+SRCS_DIR	= srcs/
 
-SERVER_SRCS		=	$(addprefix $(SERVER_SRCS_DIR), main_server.c \
-						malloc.c \
-						transmission_and_reset.c
+SRCS_SERVER	=	server/main_server.c \
+				server/malloc.c \
+				server/transmission_and_reset.c
 
-SERVER_OBJS		=	$(addprefix $(SERVER_OBJS_DIR), $(SERVER_SRCS:.c=.o))
+SRCS_CLIENT	=	client/main_client.c \
+				client/client_utils.c
 
-SERVER_OBJS_DIR = server_objs/
+OBJS_CLIENT	=	$(addprefix $(OBJS_DIR), $(SRCS_CLIENT:.c=.o))
 
-CFLAGS		=	-Wall -Wextra -Werror
+OBJS_SERVER	=	$(addprefix $(OBJS_DIR), $(SRCS_SERVER:.c=.o))
+
+OBJS_DIR	= 	objs/
+
+CFLAGS		=	-Wall -Wextra -Werror  -I includes -I ft_printf/includes
 
 INCLUDES	=	-I $(INC)
 
 CC			=	cc
 
-NAME		=	server
+NAME		=	minitalk
 
 RM			=	rm -rf
 
 INC			=	includes
 
-$(OBJS_DIR)%.o:	$(SRCS_DIR)%.c
-				@mkdir -p $(OBJS_DIR)
-				$(CC) $(CFLAGS) -c $< -o $@
+LIB_DIR		= 	./ft_printf/
+
+LIB			=	-lftprintf
 
 all:		$(NAME)
+
+$(NAME):		makeftprintf client server
+
+client:			$(OBJS_CLIENT)
+				$(CC) $(CFLAGS) $^ -o client -L ./ft_printf -lftprintf
+
+server:			$(OBJS_SERVER)
+				$(CC) $(CFLAGS) $^ -o server -L ./ft_printf -lftprintf
+
+$(OBJS_DIR)%.o:	$(SRCS_DIR)%.c
+				@mkdir -p $(OBJS_DIR) $(OBJS_DIR)client $(OBJS_DIR)server
+				${CC} ${CFLAGS} -c $< -o $@
+
+bonus : $(NAME)
 
 makeftprintf:
 			$(MAKE) -C ft_printf all
@@ -44,16 +63,15 @@ makeftprintf:
 fcleanprintf:
 			$(MAKE) -C ft_printf fclean 
 
-$(NAME): 
-	$(CC) $(CFLAGS) $(SERVER_SRCS) -L $(LINK_LIB) $(INCLUDES) -o fdf
-
 clean:
-			${RM} ${OBJS}
+			$(RM) $(OBJS_DIR)
+			make -C ft_printf clean
 
-fclean:		clean fcleanlibft
+fclean:		clean fcleanprintf
 			${RM} ${OBJS_DIR}
-			${RM} ${NAME}
+			${RM} server
+			${RM} client
 
 re:			fclean all
 
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re client server

@@ -6,11 +6,11 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 20:11:59 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:31:57 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:13:28 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/server.h"
+#include "../../includes/server.h"
 
 static t_server	g_server = {0};
 
@@ -27,7 +27,7 @@ int	main(void)
 	while (1)
 	{
 		while (!g_server.ready)
-			;
+			usleep(400);
 		g_server.ready = 0;
 		if (g_server.count <= size_of_int)
 			get_message_len(&buf.len, g_server.bit, g_server.count);

@@ -6,11 +6,11 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 19:37:02 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/12 20:10:41 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/13 19:13:58 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/client.h"
+#include "../../includes/client.h"
 
 /*
 ** Initialisation de la struct sigaction
