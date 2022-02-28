@@ -6,7 +6,7 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/12 19:34:14 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/13 20:22:40 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/28 15:42:06 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv)
 	g_client.pid = ft_atoi(argv[1]);
 	if (g_client.pid <= 0)
 	{
-		ft_printf(RED "Transmission failed. The server pid is negative or equal to 0\n" RESET);
+		ft_printf(RED FAIL RESET);
 		return (1);
 	}
 	g_client.str = argv[2];

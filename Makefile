@@ -6,7 +6,7 @@
 #    By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/01/12 16:15:30 by rpottier          #+#    #+#              #
-#    Updated: 2022/02/13 20:21:04 by rpottier         ###   ########.fr        #
+#    Updated: 2022/02/28 15:44:09 by rpottier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,13 +37,11 @@ RM			=	rm -rf
 
 INC			=	includes
 
-LIB_DIR		= 	./ft_printf/
-
-LIB			=	-lftprintf
+LIB			=	ft_printf/libftprintf.a
 
 all:		$(NAME)
 
-$(NAME):		makeftprintf client server
+$(NAME):		$(LIB) client server
 
 client:			$(OBJS_CLIENT)
 				$(CC) $(CFLAGS) $^ -o client -L ./ft_printf -lftprintf
@@ -57,7 +55,7 @@ $(OBJS_DIR)%.o:	$(SRCS_DIR)%.c
 
 bonus : $(NAME)
 
-makeftprintf:
+ft_printf/libftprintf.a :
 			$(MAKE) -C ft_printf all
 
 fcleanprintf:

@@ -6,7 +6,7 @@
 /*   By: rpottier <rpottier@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 12:38:18 by rpottier          #+#    #+#             */
-/*   Updated: 2022/02/13 19:10:38 by rpottier         ###   ########.fr       */
+/*   Updated: 2022/02/28 15:42:08 by rpottier         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 
 /* ------------------- Utils -------------------------*/
 
-
+# define FAIL "Transmission failed. The server pid is negative or equal to 0\n"
 # define CHAR_BIT 7
 
 /* --------------- Structure definition -------------- */
